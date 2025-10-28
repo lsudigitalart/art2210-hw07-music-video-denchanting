@@ -101,33 +101,6 @@ function setup() {
     });
 }
 
-function showPlayButton() {
-    if (playButton) return;
-    playButton = createButton('Play Audio');
-    playButton.style('position', 'absolute');
-    playButton.style('left', '50%');
-    playButton.style('top', '50%');
-    playButton.style('transform', 'translate(-50%,-50%)');
-    playButton.style('padding', '12px 20px');
-    playButton.style('font-size', '16px');
-    playButton.mousePressed(() => {
-        userStartAudio().then(() => {
-            if (song && song.isLoaded()) {
-                song.setLoop(true);
-                song.loop();
-            }
-            if (playButton) {
-                playButton.remove();
-                playButton = null;
-            }
-            if (hintDiv) { // also remove hint when user clicks play
-                hintDiv.remove();
-                hintDiv = null;
-            }
-        });
-    });
-}
-
 function doMitosis() {
     if (penguins.length >= maxPenguins) return;
     let children = [];
