@@ -6,6 +6,7 @@ const beatInterval = 60000 / tempo; // ms per beat
 
 let song;
 let playButton = null;
+let hintDiv = null; // added: top hint element
 
 let penguinImage;
 let penguinW = 60;
@@ -62,6 +63,25 @@ function setup() {
     mitosisLast = millis();
     frameRate(60);
 
+    // small clickable hint at top of page
+    hintDiv = createDiv("If you can't hear audio, click!");
+    hintDiv.style('position', 'absolute');
+    hintDiv.style('top', '10px');
+    hintDiv.style('left', '50%');
+    hintDiv.style('transform', 'translateX(-50%)');
+    hintDiv.style('background', 'rgba(0,0,0,0.45)');
+    hintDiv.style('color', '#ffffff');
+    hintDiv.style('padding', '6px 10px');
+    hintDiv.style('border-radius', '6px');
+    hintDiv.style('font-size', '16px'); // increased from 14px
+    hintDiv.style('cursor', 'pointer');
+    hintDiv.mousePressed(() => {
+        if (hintDiv) {
+            hintDiv.remove();
+            hintDiv = null;
+        }
+    });
+
     // Attempt to autoplay; if browser blocks, show a play button
     userStartAudio().then(() => {
         if (song && song.isLoaded()) {
@@ -71,6 +91,10 @@ function setup() {
         if (playButton) {
             playButton.remove();
             playButton = null;
+        }
+        if (hintDiv) { // remove hint when audio starts
+            hintDiv.remove();
+            hintDiv = null;
         }
     }).catch(() => {
         showPlayButton();
@@ -95,6 +119,10 @@ function showPlayButton() {
             if (playButton) {
                 playButton.remove();
                 playButton = null;
+            }
+            if (hintDiv) { // also remove hint when user clicks play
+                hintDiv.remove();
+                hintDiv = null;
             }
         });
     });
